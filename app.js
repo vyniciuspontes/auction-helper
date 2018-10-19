@@ -9,7 +9,7 @@
 
   var separatorCharacter = '.';
   var decimalCharacter = ',';
-  var formatCurrency = true;
+  var formatCurrency = false;
 
   var $throwInput = $("[data-js='throw-input']").first();
   var $generateSuggestionButton = $("[data-js='generate-suggestion-button']").first();
@@ -32,14 +32,21 @@
   $generateSuggestionButton.click(function() {
     var $rangeRadio = $("input[name='range-radio']:checked").first();
 
+    formatCurrency = $("input[name='currencyCheck']").is(":checked");
+
+    console.log('Input number => ', $throwInput.val());
+
     var givenInput = removeCurrencyPunctuation($throwInput.val());
 
     var suggestion = generateSuggestion(+givenInput, $rangeRadio.val());
 
     if (formatCurrency === true) {
       suggestion = currencyFormat(suggestion);
-      console.log('suggestion', suggestion);
     }
+
+
+
+    console.log('Generated Number =>', suggestion);
 
     $throwInput.val(suggestion);
 
@@ -79,7 +86,7 @@
 
     var returnData = replaced;
 
-    if (decimalCharacter && formatCurrency) {
+    if (decimalCharacter && returnData.indexOf(decimalCharacter)) {
       returnData = returnData.split(decimalCharacter)[0];
     }
 
@@ -87,9 +94,6 @@
   }
 
   function currencyFormat(num) {
-
-    console.log(num);
-
     if (decimalCharacter) {
       return (
         num
@@ -98,7 +102,6 @@
         .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + separatorCharacter)
       )
     } else {
-      console.log(num.toString());
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + separatorCharacter);
     }
   }
