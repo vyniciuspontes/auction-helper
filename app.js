@@ -14,7 +14,6 @@
   var $throwInput = $("[data-js='throw-input']").first();
   var $generateSuggestionButton = $("[data-js='generate-suggestion-button']").first();
 
-
   $throwInput.keyup(function() {
     var empty = false;
     $throwInput.each(function() {
@@ -33,9 +32,9 @@
   $generateSuggestionButton.click(function() {
     var $rangeRadio = $("input[name='range-radio']:checked").first();
 
-    let givenInput = removeCurrencyPunctuation($throwInput.val());
+    var givenInput = removeCurrencyPunctuation($throwInput.val());
 
-    let suggestion = generateSuggestion(+givenInput, $rangeRadio.val());
+    var suggestion = generateSuggestion(+givenInput, $rangeRadio.val());
 
     if (formatCurrency === true) {
       suggestion = currencyFormat(suggestion);
