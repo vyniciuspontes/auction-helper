@@ -7,8 +7,8 @@
     [50000, 100000]
   ];
 
-  var separatorCharacter = ',';
-  var decimalCharacter = '.';
+  var separatorCharacter = '.';
+  var decimalCharacter = ',';
   var formatCurrency = true;
 
   var $throwInput = $("[data-js='throw-input']").first();
@@ -37,9 +37,9 @@
 
     let suggestion = generateSuggestion(+givenInput, $rangeRadio.val());
 
-    if (formatCurrency) {
+    if (formatCurrency === true) {
       suggestion = currencyFormat(suggestion);
-      console.log(suggestion);
+      console.log('suggestion', suggestion);
     }
 
     $throwInput.val(suggestion);
@@ -76,25 +76,29 @@
   }
 
   function removeCurrencyPunctuation(num) {
-    var replaced = num.replace(new RegExp(separatorCharacter, 'g'), '');
+    var replaced = num.split(separatorCharacter).join('');
+
     var returnData = replaced;
 
-    if(decimalCharacter)
+    if (decimalCharacter && formatCurrency) {
       returnData = returnData.split(decimalCharacter)[0];
+    }
 
     return returnData;
   }
 
   function currencyFormat(num) {
 
-    if(decimalCharacter){
+    console.log(num);
+
+    if (decimalCharacter) {
       return (
         num
         .toFixed(2) // always two decimal digits
         .replace('.', decimalCharacter) // replace decimal point character with ,
         .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + separatorCharacter)
       )
-    }else {
+    } else {
       console.log(num.toString());
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + separatorCharacter);
     }
